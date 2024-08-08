@@ -6,29 +6,6 @@ import image from '../../assets/finance-manager.jpeg'
 export default function Home() {
   return (
     <div className="flex flex-col min-h-dvh">
-      <header className="bg-primary text-primary-foreground px-4 lg:px-6 h-14 flex items-center">
-        <Link href="#" className="flex items-center justify-center" prefetch={false}>
-          <MountainIcon className="size-6" />
-          <span className="font-bold text-lg">Finance Manager</span>
-        </Link>
-        <p className="ml-4 text-sm font-medium">Manage Your Finances Effortlessly</p>
-        <div className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            href="/auth/login"
-            className="inline-flex h-9 items-center justify-center rounded-md bg-primary-foreground px-4 py-2 text-sm font-medium text-primary shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-            prefetch={false}
-          >
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-            prefetch={false}
-          >
-            Register
-          </Link>
-        </div>
-      </header>
       <main className="flex-1">
         <section className="w-full pt-12 md:pt-24 lg:pt-32 border-y">
           <div className="container space-y-10 xl:space-y-16 px-4 md:px-6">
@@ -144,93 +121,9 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="bg-muted p-6 md:py-12 w-full">
-        <div className="container max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 text-sm">
-          <div className="grid gap-1">
-            <h3 className="font-semibold">Finance Manager</h3>
-            <Link href="#" prefetch={false}>
-              About Us
-            </Link>
-            <Link href="#" prefetch={false}>
-              Features
-            </Link>
-            <Link href="#" prefetch={false}>
-              Pricing
-            </Link>
-          </div>
-          <div className="grid gap-1">
-            <h3 className="font-semibold">Resources</h3>
-            <Link href="#" prefetch={false}>
-              Blog
-            </Link>
-            <Link href="#" prefetch={false}>
-              Help Center
-            </Link>
-            <Link href="#" prefetch={false}>
-              Guides
-            </Link>
-          </div>
-          <div className="grid gap-1">
-            <h3 className="font-semibold">Legal</h3>
-            <Link href="#" prefetch={false}>
-              Privacy Policy
-            </Link>
-            <Link href="#" prefetch={false}>
-              Terms of Service
-            </Link>
-            <Link href="#" prefetch={false}>
-              Cookie Policy
-            </Link>
-          </div>
-          <div className="grid gap-1">
-            <h3 className="font-semibold">Contact</h3>
-            <Link href="#" prefetch={false}>
-              Support
-            </Link>
-            <Link href="#" prefetch={false}>
-              Sales
-            </Link>
-            <Link href="#" prefetch={false}>
-              Partnerships
-            </Link>
-          </div>
-          <div className="grid gap-1">
-            <h3 className="font-semibold">Follow Us</h3>
-            <Link href="#" prefetch={false}>
-              Twitter
-            </Link>
-            <Link href="#" prefetch={false}>
-              Facebook
-            </Link>
-            <Link href="#" prefetch={false}>
-              LinkedIn
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
-
-function MountainIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
-  )
-}
-
 
 function PlaneIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
