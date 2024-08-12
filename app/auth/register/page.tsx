@@ -1,7 +1,9 @@
 import { Register } from "@/components/component/register"
 
-export function page() {
+function page() {
   return (
     <Register/>
   )
 }
+
+export default page;
