@@ -1,1 +1,13 @@
-//https://v0.dev/r/QwpFwdPlxGc
+export interface Budget {
+    id?: number;
+    category: string;
+    amount: number;
+    start_date: string;
+    end_date: string;
+  }
+
+  export interface NewUser{
+    username: string;
+    password_hash: string;
+    email:string;
+  }
