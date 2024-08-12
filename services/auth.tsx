@@ -16,7 +16,8 @@ export const getUserFromToken = () => {
   if (!token) return null;
 
   try {
-    return jwtDecode(token);
+    const payload = jwtDecode(token);
+    return payload;
   } catch (e) {
     return null;
   }
