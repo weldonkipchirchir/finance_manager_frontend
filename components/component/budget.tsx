@@ -31,6 +31,8 @@ import { Budget as BudgetType } from "@/interfaces/interfaces";
 import { toast } from "react-hot-toast";
 import { ArrowUpDown } from "lucide-react";
 import { getToken } from "@/services/auth";
+import { MdDeleteOutline } from "react-icons/md";
+import { Tooltip } from 'react-tooltip';
 
 export function Budget() {
   const [newBudget, setNewBudget] = useState<BudgetType>({
@@ -134,6 +136,29 @@ export function Budget() {
     }
   };
 
+  const handleDelete = async (id: Number| undefined
+  )=>{
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/budget/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (res.status === 200) {
+        toast.success("budget deleted");
+      } else {
+        toast.error(await res.text());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const scrollToAddBudget = () => {
     addBudgetRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -229,6 +254,14 @@ export function Budget() {
                   </span>
                 )}
               </TableHead>
+              <TableHead className="cursor-pointer" onClick={() => handleSort("end_date")}>
+                Action
+                {sortBy === "end_date" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? "\u2191" : "\u2193"}
+                  </span>
+                )}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -238,6 +271,10 @@ export function Budget() {
                 <TableCell className="text-right">${budget.amount}</TableCell>
                 <TableCell>{budget.start_date}</TableCell>
                 <TableCell>{budget.end_date}</TableCell>
+                <a data-tooltip-id="my-tooltip" data-tooltip-content="Delete Budget!">
+                <TableCell><MdDeleteOutline className="cursor-pointer" onClick={()=>handleDelete(budget.id)}/></TableCell>
+                </a>
+                <Tooltip id="my-tooltip" />
               </TableRow>
             ))}
           </TableBody>
