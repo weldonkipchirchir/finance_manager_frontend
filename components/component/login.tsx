@@ -42,7 +42,7 @@ export function Login() {
 
       const data = await res.json();
       console.log(data)
-      if (data) {
+      if (res.status === 200) {
         setStatus(false)
         setUser(data.user);
         saveCookie(data.token);
@@ -50,7 +50,7 @@ export function Login() {
         window.location.href = '/dashboard';
       } else {
         setStatus(false)
-        toast.error(data.message)
+        toast.error(await res.text())
       }
     }
     catch (err: any) {
