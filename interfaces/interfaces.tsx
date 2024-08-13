@@ -11,3 +11,10 @@ export interface Budget {
     password_hash: string;
     email:string;
   }
+
+  export interface Payload{
+    id: number;
+    email: string;
+    exp: number;
+  }
+  
