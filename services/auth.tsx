@@ -1,4 +1,5 @@
 "use client";
+import { Payload } from '@/interfaces/interfaces';
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode'; 
 
@@ -16,7 +17,7 @@ export const getUserFromToken = () => {
   if (!token) return null;
 
   try {
-    const payload = jwtDecode(token);
+    const payload : Payload = jwtDecode(token);
     return payload;
   } catch (e) {
     return null;
