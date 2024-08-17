@@ -18,3 +18,16 @@ export interface Budget {
     exp: number;
   }
   
+  export interface Transaction {
+    id?: number;
+    category: string;
+    amount: number;
+    description?: string;
+    date: string | undefined;
+  }
+
+  export interface UserProfile {
+    username: string;
+    email: string;
+    password_hash: string;
+  }
