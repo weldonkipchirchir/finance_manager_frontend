@@ -27,26 +27,54 @@ import {
 } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Budget as BudgetType } from "@/interfaces/interfaces";
+import { Budget as BudgetType, Income } from "@/interfaces/interfaces";
 import { toast } from "react-hot-toast";
 import { ArrowUpDown } from "lucide-react";
 import { getToken } from "@/services/auth";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdUpdate } from "react-icons/md";
 import { Tooltip } from 'react-tooltip';
+import { useRouter } from "next/navigation";
+import { calculateTotalBudget, calculateTotalIncome } from "./dashboard";
+import { Sidebar } from "./sidebar";
 
 export function Budget() {
+  const router = useRouter();
+  const [incomes, setIncomes] = useState<Income[]>([]);
+  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const [totalBudget, setTotalBudget] = useState<number>(0);
   const [newBudget, setNewBudget] = useState<BudgetType>({
     category: "",
     amount: 0,
     start_date: "",
     end_date: "",
   });
+  
   const [budgets, setBudgets] = useState<BudgetType[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<keyof BudgetType>("category");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const addBudgetRef = useRef<HTMLDivElement>(null);
   const token = getToken();
+
+  const fetchIncome = useCallback(async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/incomes`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        setIncomes(data);
+        setTotalIncome(calculateTotalIncome(data));
+      } else {
+        toast.error(await res.text());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [token]);
 
   const getBudgets = useCallback(async () => {
     try {
@@ -62,17 +90,19 @@ export function Budget() {
 
       if (res.status === 200) {
         setBudgets(data);
+        setTotalBudget(calculateTotalBudget(data));
       } else {
         toast.error(await res.text());
       }
     } catch (error) {
       console.log(error);
     }
-  }, [newBudget]);
+  }, [token]);
 
   useEffect(() => {
     getBudgets();
-  }, [getBudgets, newBudget]);
+    fetchIncome();
+  }, [getBudgets, fetchIncome,newBudget]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -81,7 +111,7 @@ export function Budget() {
   const handleSort = (key: keyof BudgetType) => {
     setSortBy((prevSortBy) => (prevSortBy === key ? key : key));
     setSortOrder((prevSortOrder) =>
-      prevSortBy === key
+      sortBy === key
         ? prevSortOrder === "asc"
           ? "desc"
           : "asc"
@@ -89,7 +119,7 @@ export function Budget() {
     );
   };
 
-  const handleNewBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewBudgetChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewBudget((prevBudget) => ({
       ...prevBudget,
@@ -136,7 +166,7 @@ export function Budget() {
     }
   };
 
-  const handleDelete = async (id: Number| undefined
+  const handleDelete = async (id: number| undefined
   )=>{
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/budget/${id}`, {
@@ -157,6 +187,10 @@ export function Budget() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleUpdate = (id: number | undefined) => {
+    router.push(`/budget/update?id=${id}`);
   }
 
   const scrollToAddBudget = () => {
@@ -183,7 +217,19 @@ export function Budget() {
   }, [budgets, searchTerm, sortBy, sortOrder]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
+    <Sidebar/>
+    <div className="flex flex-col">
+            {
+          totalBudget> totalIncome && (
+            <div className="alert alert-warning mb-6">
+              <h2 className="text-lg text-red-600 font-bold">Budget Warning</h2>
+              <ul>
+                <li className="text-red-400">The budget has exceeded by ${totalBudget - totalIncome}.</li>
+              </ul>
+            </div>
+          )
+        }
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Budgets</h1>
         <Button onClick={scrollToAddBudget}>Add Budget</Button>
@@ -271,10 +317,26 @@ export function Budget() {
                 <TableCell className="text-right">${budget.amount}</TableCell>
                 <TableCell>{budget.start_date}</TableCell>
                 <TableCell>{budget.end_date}</TableCell>
-                <a data-tooltip-id="my-tooltip" data-tooltip-content="Delete Budget!">
-                <TableCell><MdDeleteOutline className="cursor-pointer" onClick={()=>handleDelete(budget.id)}/></TableCell>
-                </a>
-                <Tooltip id="my-tooltip" />
+                <TableCell>
+                  <button
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content="Delete Budget!"
+                    className="cursor-pointer mr-2 text-lg"
+                    onClick={() => handleDelete(budget.id)}
+                  >
+                    <MdDeleteOutline />
+                    <Tooltip id="my-tooltip"/>
+                  </button>
+                  <button
+                    data-tooltip-id="my-update"
+                    data-tooltip-content="Update Budget!"
+                    className="cursor-pointer text-lg"
+                    onClick={() => handleUpdate(budget.id)}
+                  >
+                    <MdUpdate />
+                    <Tooltip id="my-update"/>
+                  </button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -290,20 +352,21 @@ export function Budget() {
           <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
                 <Select
-                  id="category"
-                  name="category"
                   value={newBudget.category || ""}
-                  onChange={handleNewBudgetChange}
+                  onValueChange={(value) => handleNewBudgetChange({ target: { name: "category", value } } as React.ChangeEvent<HTMLSelectElement>)}
                   >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Groceries">Groceries</SelectItem>
+                  <SelectItem value="Groceries">Groceries</SelectItem>
                     <SelectItem value="Utilities">Utilities</SelectItem>
                     <SelectItem value="Entertainment">Entertainment</SelectItem>
-                    <SelectItem value="Rent">Rent</SelectItem>
-                    <SelectItem value="Dining">Dining</SelectItem>
+                    <SelectItem value="Rent">Rent</SelectItem>    
+                    <SelectItem value="Healthcare">Healthcare</SelectItem>
+                    <SelectItem value="Electricity">Electricity</SelectItem>
+                    <SelectItem value="Education">Education</SelectItem>
+                    <SelectItem value="Subscriptions">Subscriptions</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
@@ -348,6 +411,7 @@ export function Budget() {
           </CardFooter>
         </Card>
       </div>
+     </div> 
     </div>
   );
 }
