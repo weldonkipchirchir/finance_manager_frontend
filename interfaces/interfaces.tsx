@@ -31,3 +31,30 @@ export interface Budget {
     email: string;
     password_hash: string;
   }
+
+  export interface Goal{
+    id?: number;
+    goal_description: string;
+    goal_amount: number;
+    deadline: string;
+  }
+
+  export interface Income {
+    id?: number;
+    amount: number;
+    source: string;
+    date: string | undefined;
+  } 
+
+  export interface CategoryExceeded {
+    name: string;
+    amount: number;
+  }
+
+export interface Goal{
+  id?: number;
+  goal_description: string;
+  goal_amount: number;
+  deadline: string;
+  saving: number;
+}
