@@ -1,6 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { JSX, SVGProps } from "react";
+import { useCallback, useEffect, useState, JSX, SVGProps } from 'react';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { removeToken, getUserFromToken } from '../../services/auth';
@@ -9,7 +8,12 @@ import { removeToken, getUserFromToken } from '../../services/auth';
 export function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+
+  const handleLogout = useCallback(() => {
+    removeToken();
+    setUser(null);
+    router.push('/auth/login');
+  }, [router]);
 
   useEffect(() => {
     const userFromToken = getUserFromToken();
@@ -21,12 +25,8 @@ export function Navbar() {
         handleLogout();
       }
     }
-  }, []);
-  const handleLogout = () => {
-    removeToken();
-    setUser(null);
-    router.push('/auth/login');
-  };
+  }, [handleLogout]);
+
 
   return (
     <div>
@@ -42,6 +42,8 @@ export function Navbar() {
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/budget">Budgets</Link>
               <Link href="/transaction">Transactions</Link>
+              <Link href="/income">Income</Link>
+              <Link href="/goal">Goals</Link>
               <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
