@@ -1,6 +1,4 @@
 "use client"
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -12,10 +10,10 @@ import { getToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Transaction } from "@/interfaces/interfaces"
-import { describe } from "node:test";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarDaysIcon } from "./update-budget"
+import { Sidebar } from "./sidebar"
 
 export function UpdateTransaction() {
   const token = getToken();
@@ -96,31 +94,10 @@ export function UpdateTransaction() {
     
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className="grid min-h-screen w-full grid-cols md:p-6 lg:gap-8">
+    <Sidebar/>
+    <div className="flex flex-col">      
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/dashboard" prefetch={false}>
-                  Finance
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/transaction" prefetch={false}>
-                  Transactions
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Update Transaction</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <div className="relative ml-auto flex-1 md:grow-0">
           <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -221,6 +198,7 @@ export function UpdateTransaction() {
           </CardFooter>
         </Card>
       </main>
+    </div>
     </div>
   )
 }
