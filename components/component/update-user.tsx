@@ -8,6 +8,7 @@ import { UserProfile } from "@/interfaces/interfaces";
 import { getToken, getUserFromToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation"
+import { Sidebar } from "./sidebar";
 
 export function UpdateUser() {
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -40,7 +41,7 @@ export function UpdateUser() {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userProfile),
+        body: JSON.stringify(userProfile), 
       });
 
       const data = await res.json();
@@ -59,8 +60,10 @@ export function UpdateUser() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-background">
-      <Card className="w-full max-w-md">
+<div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
+    <Sidebar/>
+    <div className="flex flex-col items-center">            
+      <Card className="w-full max-w-6xl">
         <form onSubmit={handleSubmit}>
           <CardHeader>
             <CardTitle>Update User Profile</CardTitle>
@@ -105,6 +108,7 @@ export function UpdateUser() {
           </CardFooter>
         </form>
       </Card>
+    </div>
     </div>
   );
 }
