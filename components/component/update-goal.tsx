@@ -10,10 +10,6 @@ import { getToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Goal } from "@/interfaces/interfaces"
-import { Popover } from "@radix-ui/react-popover"
-import { PopoverContent, PopoverTrigger } from "../ui/popover"
-import { CalendarDaysIcon } from "./update-budget"
-import { Calendar } from "../ui/calendar"
 
 export function UpdateGoal() {
   const token = getToken();
@@ -120,27 +116,17 @@ export function UpdateGoal() {
                   />
                 </div>
                 <div className="grid gap-3">
-                    <Label htmlFor="start-date">Dadeline</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          id="start-date"
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal"
-                        >
-                          <CalendarDaysIcon className="mr-2 h-4 w-4" />
-                          {goal.deadline}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          initialFocus
-                          mode="single"
-                          selected={goal.deadline ? new Date(goal.deadline) : undefined}
-                          onSelect={(date) => date && setGoal({ ...goal, deadline: date.toISOString().split("T")[0] })}
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <div>
+                  <Label htmlFor="dadeline">Dadeline</Label>
+                  <Input
+                    type="date"
+                    id="dadeline"
+                    name="dadeline"
+                    value={goal.deadline}
+                    onChange={(e) =>
+                    setGoal({ ...goal, deadline: e.target.value })}                    required
+                  />
+                </div>
                   </div>
               </form>
             </CardContent>
