@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { MdDeleteOutline, MdUpdate } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
 import { useRouter } from "next/navigation";
+import TopBar from "./topBar";
 
 export function Goals() {
   const router = useRouter();
@@ -122,7 +123,8 @@ export function Goals() {
     <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
       <Sidebar />
       <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-6">
+      <TopBar/>
+      <div className="flex mt-2 items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Goals</h1>
         <Button size="sm" onClick={scrollToAddGoal}>
           Add Goal
