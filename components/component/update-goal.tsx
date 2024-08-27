@@ -10,6 +10,7 @@ import { getToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Goal } from "@/interfaces/interfaces"
+import TopBar from "./topBar"
 
 export function UpdateGoal() {
   const token = getToken();
@@ -85,6 +86,7 @@ export function UpdateGoal() {
           <Sidebar/>
       <main className="flex-1 p-4 sm:px-6 sm:py-0 md:gap-8">
         <div className="mx-auto grid max-w-6xl flex-1 auto-rows-max gap-4">
+          <TopBar/>
           <Card>
             <CardHeader>
               <CardTitle>Goal Details</CardTitle>
