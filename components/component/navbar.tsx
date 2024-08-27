@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { removeToken, getUserFromToken } from '../../services/auth';
 
-
 export function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -27,7 +26,6 @@ export function Navbar() {
     }
   }, [handleLogout]);
 
-
   return (
     <div>
       <header className="bg-primary text-primary-foreground px-4 lg:px-6 h-14 flex items-center">
@@ -44,7 +42,6 @@ export function Navbar() {
               <Link href="/transaction">Transactions</Link>
               <Link href="/income">Income</Link>
               <Link href="/goal">Goals</Link>
-              <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
