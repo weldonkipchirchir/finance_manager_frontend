@@ -11,6 +11,7 @@ import { MdDeleteOutline, MdUpdate } from "react-icons/md";
 import { Income as IncomeType } from "@/interfaces/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import TopBar from "./topBar";
 
 export function Income() {
   const router = useRouter();
@@ -110,6 +111,7 @@ export function Income() {
     <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
       <Sidebar />
       <div className="flex flex-col">
+        <TopBar/>
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Add Income</h1>
           <Button onClick={scrollToAddIncome}>Add New Income</Button>
