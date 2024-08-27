@@ -12,6 +12,7 @@ import { getToken } from "@/services/auth"
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation"
 import { Sidebar } from "./sidebar"
+import TopBar from "./topBar"
 
 export function UpdateBudget() {
   const token = getToken();
@@ -93,6 +94,7 @@ export function UpdateBudget() {
     <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
       <Sidebar />
       <div className="flex flex-col">
+        <TopBar/>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <div className="relative ml-auto flex-1 md:grow-0">
             <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
