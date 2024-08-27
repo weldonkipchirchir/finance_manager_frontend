@@ -1,16 +1,12 @@
 "use client"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import Image from "next/image"
 import { JSX, SVGProps, useCallback, useEffect, useState } from "react"
 import { Budget, Income, Transaction } from "@/interfaces/interfaces"
 import toast from "react-hot-toast"
 import { getToken } from "@/services/auth"
 import { Sidebar } from "./sidebar"
+import TopBar from "./topBar"
 
 export function calculateTotalIncome(incomes: Income[]): number {
   return incomes?.reduce((accumulator: number, income: Income) => {
@@ -112,47 +108,7 @@ return (
   <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
     <Sidebar/>
     <div className="flex flex-col">
-      <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:h-[60px] md:px-6">
-        <Link href="#" className="lg:hidden" prefetch={false}>
-          <LandmarkIcon className="h-6 w-6" />
-          <span className="sr-only">Home</span>
-        </Link>
-        <div className="w-full flex-1">
-          <form>
-            <div className="relative">
-              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search"
-                className="w-full bg-background shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3"
-              />
-            </div>
-          </form>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full border w-8 h-8">
-              <Image
-                src="/placeholder.svg"
-                width="32"
-                height="32"
-                className="rounded-full"
-                alt="Avatar"
-                style={{ aspectRatio: "32/32", objectFit: "cover" }}
-              />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </header>
+      <TopBar/>
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-6">
       {
           totalTransactions > totalIncome && (
