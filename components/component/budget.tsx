@@ -36,6 +36,7 @@ import { Tooltip } from 'react-tooltip';
 import { useRouter } from "next/navigation";
 import { calculateTotalBudget, calculateTotalIncome } from "./dashboard";
 import { Sidebar } from "./sidebar";
+import TopBar from "./topBar";
 
 export function Budget() {
   const router = useRouter();
@@ -220,6 +221,7 @@ export function Budget() {
     <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
     <Sidebar/>
     <div className="flex flex-col">
+      <TopBar/>
             {
           totalBudget> totalIncome && (
             <div className="alert alert-warning mb-6">
