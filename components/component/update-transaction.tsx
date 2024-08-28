@@ -14,6 +14,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarDaysIcon } from "./update-budget"
 import { Sidebar } from "./sidebar"
+import TopBar from "./topBar"
 
 export function UpdateTransaction() {
   const token = getToken();
@@ -56,17 +57,17 @@ export function UpdateTransaction() {
     }
   }, [token]);
 
-  const handleUpdate = async(e: React.MouseEvent<HTMLButtonElement>)=>{
+  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = {
-      category : transaction.category,
+      category: transaction.category,
       amount: parseFloat(transaction.amount.toString()),
       date: transaction.date,
       description: transaction.description
     }
 
 
-    try{
+    try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction/${transaction.id}`, {
         method: "PUT",
         headers: {
@@ -86,45 +87,36 @@ export function UpdateTransaction() {
       } else {
         toast.error(data.message || "Failed to update transaction");
       }
-    }catch(error: any){
+    } catch (error: any) {
       console.log(error)
       toast.error("An error occurred while updating the budget");
     }
   }
-    
+
 
   return (
-    <div className="grid min-h-screen w-full grid-cols md:p-6 lg:gap-8">
-    <Sidebar/>
-    <div className="flex flex-col">      
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <div className="relative ml-auto flex-1 md:grow-0">
-          <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search transactions..."
-            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-          />
-        </div>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="h-7 w-7">
-            <div className="h-4 w-4" />
-            <span className="sr-only">Back</span>
-          </Button>
-          <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-            Update Transaction
-          </h1>
-        </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Transaction Details</CardTitle>
-            <CardDescription>Modify the transaction details as needed.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className="grid gap-6">
-            <div className="grid gap-3">
+    <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
+      <Sidebar />
+      <main className="flex-1 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <div className="mx-auto grid max-w-6xl flex-1 auto-rows-max gap-4">
+          <TopBar />
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" className="h-7 w-7">
+              <div className="h-4 w-4" />
+              <span className="sr-only">Back</span>
+            </Button>
+            <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
+              Update Transaction
+            </h1>
+          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Transaction Details</CardTitle>
+              <CardDescription>Modify the transaction details as needed.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="grid gap-6">
+                <div className="grid gap-3">
                   <Label htmlFor="amount">Amount</Label>
                   <Input
                     id="amount"
@@ -133,7 +125,7 @@ export function UpdateTransaction() {
                     onChange={(e) => setTransaction({ ...transaction, amount: parseFloat(e.target.value) })}
                   />
                 </div>
-              <div className="grid gap-3">
+                <div className="grid gap-3">
                   <Label htmlFor="category">Category</Label>
                   <Select
                     defaultValue={transaction.category}
@@ -144,61 +136,61 @@ export function UpdateTransaction() {
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectItem value="Groceries">Groceries</SelectItem>
-                    <SelectItem value="Utilities">Utilities</SelectItem>
-                    <SelectItem value="Entertainment">Entertainment</SelectItem>
-                    <SelectItem value="Rent">Rent</SelectItem>    
-                    <SelectItem value="Healthcare">Healthcare</SelectItem>
-                    <SelectItem value="Electricity">Electricity</SelectItem>
-                    <SelectItem value="Education">Education</SelectItem>
-                    <SelectItem value="Subscriptions">Subscriptions</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
+                      <SelectItem value="Groceries">Groceries</SelectItem>
+                      <SelectItem value="Utilities">Utilities</SelectItem>
+                      <SelectItem value="Entertainment">Entertainment</SelectItem>
+                      <SelectItem value="Rent">Rent</SelectItem>
+                      <SelectItem value="Healthcare">Healthcare</SelectItem>
+                      <SelectItem value="Electricity">Electricity</SelectItem>
+                      <SelectItem value="Education">Education</SelectItem>
+                      <SelectItem value="Subscriptions">Subscriptions</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              <div className="grid gap-3">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  className="min-h-32"
-                  value={transaction.description}
-                  onChange={(e) => setTransaction({...transaction, description: e.target.value})}
-                />
-              </div>
-              <div className="grid gap-3">
-                    <Label htmlFor="start-date">Start Date</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          id="start-date"
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal"
-                        >
-                          <CalendarDaysIcon className="mr-2 h-4 w-4" />
-                          {transaction.date}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          initialFocus
-                          mode="single"
-                          selected={transaction.date ? new Date(transaction.date) : undefined}
-                          onSelect={(date) => date && setTransaction({ ...transaction, date: date.toISOString().split("T")[0] })}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-            </form>
-          </CardContent>
-          <CardFooter className="justify-end">
-            <Button variant="outline" className="mr-2">
-              Cancel
-            </Button>
-            <Button onClick={handleUpdate}>Save Changes</Button>
-          </CardFooter>
-        </Card>
+                <div className="grid gap-3">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    className="min-h-32"
+                    value={transaction.description}
+                    onChange={(e) => setTransaction({ ...transaction, description: e.target.value })}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="start-date">Start Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        id="start-date"
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <CalendarDaysIcon className="mr-2 h-4 w-4" />
+                        {transaction.date}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        initialFocus
+                        mode="single"
+                        selected={transaction.date ? new Date(transaction.date) : undefined}
+                        onSelect={(date) => date && setTransaction({ ...transaction, date: date.toISOString().split("T")[0] })}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </form>
+            </CardContent>
+            <CardFooter className="justify-end">
+              <Button variant="outline" className="mr-2">
+                Cancel
+              </Button>
+              <Button onClick={handleUpdate}>Save Changes</Button>
+            </CardFooter>
+          </Card>
+        </div>
       </main>
-    </div>
     </div>
   )
 }
