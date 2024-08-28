@@ -9,6 +9,7 @@ import { getToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Income } from "@/interfaces/interfaces"
+import TopBar from "./topBar"
 
 export function UpdateIncome() {
   const token = getToken();
@@ -80,7 +81,8 @@ export function UpdateIncome() {
   return (
     <div className="grid min-h-screen w-full grid-cols-1 gap-6 bg-background p-4 md:grid-cols-[280px_1fr] md:p-6 lg:gap-8">
       <Sidebar />
-      <div className="flex justify-center">
+      <div className="flex-col justify-center">
+        <TopBar/>
         <Card className="w-full max-w-6xl h-fit">
           <CardHeader>
             <CardTitle>Update Income</CardTitle>
