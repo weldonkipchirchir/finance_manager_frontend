@@ -29,18 +29,6 @@ function TopBar() {
     router.push('/auth/login');
   }, [router]);
 
-  useEffect(() => {
-    const userFromToken = getUserFromToken();
-    if (userFromToken) {
-      const currentTime = Math.floor(Date.now()/1000);
-      if (userFromToken.exp > currentTime){
-        setUser(userFromToken as any);
-      }else{
-        handleLogout();
-      }
-    }
-  }, [handleLogout]);
-
   const toggleMenu = (open: boolean | ((prevState: boolean) => boolean)) => {
     setMenuOpen(open);
   };
