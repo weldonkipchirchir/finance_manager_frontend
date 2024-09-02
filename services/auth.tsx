@@ -1,9 +1,9 @@
 "use client";
-import { Payload } from '@/interfaces/interfaces';
 import Cookies from 'js-cookie';
-import {jwtDecode} from 'jwt-decode'; 
+import { NextRequest } from 'next/server';
+import { jwtVerify } from "jose";
 
-const TOKEN_KEY = 'finance_manager_token';
+const TOKEN_KEY: string = process.env.NEXT_TOKEN_NAME || '';
 export const saveCookie = (token: string) => {
   Cookies.set(TOKEN_KEY, token);
 };
@@ -12,14 +12,15 @@ export const getToken = (): string | null => {
   return Cookies.get(TOKEN_KEY) ?? null;
 };
 
-export const getUserFromToken = () => {
-  const token = getToken();
+export const getUserFromToken = async(req: NextRequest) => {
+  const token = req.cookies.get(TOKEN_KEY)?.value;
   if (!token) return null;
+  console.log(token)
 
   try {
-    const payload : Payload = jwtDecode(token);
-    return payload;
-  } catch (e) {
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.NEXT_SECRET_KEY));    
+      return payload as { exp: number };
+    } catch (e) {
     return null;
   }
 };
