@@ -32,7 +32,6 @@ export interface Budget {
     email: string;
     password_hash?: string;
   }
-
   export interface Goal{
     id?: number;
     goal_description: string;
