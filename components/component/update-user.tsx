@@ -5,11 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/interfaces/interfaces";
-import { getToken, getUserFromToken } from "@/services/auth";
+import { getToken } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation"
 import { Sidebar } from "./sidebar";
 import TopBar from "./topBar";
+import { useUser } from "@/context/auth";
 
 export function UpdateUser() {
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -27,8 +28,8 @@ export function UpdateUser() {
   };
 
   const token = getToken();
-  const payload = getUserFromToken()
-  const id = payload?.id;
+  const {user} = useUser()
+  const id = user?.id;
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
