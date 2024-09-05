@@ -1,31 +1,25 @@
 'use client';
-import { useCallback, useEffect, useState, JSX, SVGProps } from 'react';
+import { JSX, SVGProps, useEffect, useState } from 'react';
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { removeToken, getUserFromToken } from '../../services/auth';
+import { useUser } from '@/context/auth';
+import { UserProfile } from '@/interfaces/interfaces';
 
 export function Navbar() {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-
-  const handleLogout = useCallback(() => {
-    removeToken();
-    setUser(null);
-    router.push('/auth/login');
-  }, [router]);
+  const {user}= useUser();
+  const [userDetails, setUserDetails] = useState<UserProfile>()
 
   useEffect(() => {
-    const userFromToken = getUserFromToken();
-    if (userFromToken) {
-      const currentTime = Math.floor(Date.now()/1000);
-      if (userFromToken.exp > currentTime){
-        setUser(userFromToken as any);
-      }else{
-        handleLogout();
+    function setAuser() {
+      if (user) {
+        setUserDetails(user as UserProfile);
+      } else {
+        setUserDetails(undefined);
       }
     }
-  }, [handleLogout]);
-
+    setAuser();
+  }, [user]);
+  console.log("//////////", user)
+  console.log(">>>>>>>>>>>>>>>", userDetails)
   return (
     <div>
       <header className="bg-primary text-primary-foreground px-4 lg:px-6 h-14 flex items-center">
@@ -35,7 +29,7 @@ export function Navbar() {
         </Link>
         <p className="ml-4 text-sm font-medium">Manage Your Finances Effortlessly</p>
         <div className="ml-auto flex gap-4 sm:gap-6">
-          {user ? (
+          {userDetails ? (
             <>
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/budget">Budgets</Link>
