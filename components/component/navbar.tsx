@@ -18,8 +18,7 @@ export function Navbar() {
     }
     setAuser();
   }, [user]);
-  console.log("//////////", user)
-  console.log(">>>>>>>>>>>>>>>", userDetails)
+
   return (
     <div>
       <header className="bg-primary text-primary-foreground px-4 lg:px-6 h-14 flex items-center">
