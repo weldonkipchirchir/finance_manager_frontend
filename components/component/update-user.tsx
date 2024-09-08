@@ -34,8 +34,6 @@ export function UpdateUser() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic to update user profile goes here.
-    console.log("User profile updated:", userProfile);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${id}`, {
         method: "PUT",
