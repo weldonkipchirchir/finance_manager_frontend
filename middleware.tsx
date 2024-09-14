@@ -16,7 +16,17 @@ const protectedRoutes = [
   "/settings"
 ];
 
+const unprotectedRoute = [
+  "/auth/login",
+  "/auth/register"
+];
+
 export default async function middleware(req: NextRequest) {
+  if (unprotectedRoute.includes(req.nextUrl.pathname)) {
+    console.log('unprotected route');
+    return NextResponse.next(); 
+  }  
+
   console.log(`Middleware triggered for ${req.nextUrl.pathname}`);
 
   const userFromToken = await getUserFromToken(req); // Pass the request object
