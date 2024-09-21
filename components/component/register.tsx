@@ -37,9 +37,11 @@ export function Register() {
     }
 
     setStatus(true);
+    console.log('url',  process.env.NEXT_PUBLIC_API_URL);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
+      // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
+      const res = await fetch(`http://localhost:8000/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
