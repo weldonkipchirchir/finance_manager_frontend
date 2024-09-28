@@ -16,7 +16,6 @@ export function Register() {
   });
   const [error, setError] = useState("");
   const [status, setStatus] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -40,8 +39,7 @@ export function Register() {
     console.log('url',  process.env.NEXT_PUBLIC_API_URL);
 
     try {
-      // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
-      const res = await fetch(`http://localhost:8000/user/register`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,10 +56,12 @@ export function Register() {
         window.location.href = "/auth/login";
       } else {
         setStatus(false);
-        toast.error(await res.text());
+        setError(data.message);
+        // toast.error(await res.text());
       }
     } catch (err: any) {
       setStatus(false);
+      console.log(err);
       toast.error(err.message || "An error occurred");
     }
   };
@@ -113,9 +113,14 @@ export function Register() {
             required
           />
         </div>
-        {error && <div className="text-red-500 text-sm">{error}</div>}
+        <div>
+          {
+          error && 
+          <div className="text-red-500 text-sm">{error}</div>
+        }
+        </div>
         <Button type="submit" className="w-full">
-          Sign Up
+          {status? 'Signing Up' : 'Sign Up'}
         </Button>
       </form>
       <div className="text-center text-sm text-muted-foreground">
