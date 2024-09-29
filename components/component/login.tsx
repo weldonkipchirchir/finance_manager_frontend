@@ -16,7 +16,8 @@ export function Login() {
     email: "",
     password: ""
   });
-  const [status, setStatus] = useState(false)
+  const [status, setStatus] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
@@ -50,6 +51,8 @@ export function Login() {
         window.location.href = '/dashboard';
       } else {
         setStatus(false)
+        setError(data.error);
+        console.log(data);
         toast.error(await res.text())
       }
     }
@@ -121,6 +124,10 @@ export function Login() {
               </Link>
             </div>
           </div>
+          {
+          error && 
+          <div className="text-red-500 text-sm">{error}</div>
+        }
           <div>
             <Button
               type="submit"
